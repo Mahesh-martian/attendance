@@ -1,9 +1,9 @@
 // Paste your deployed Apps Script Web App URL here (it ends with /exec).
-const BACKEND_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbygWBQQ1ae7-w-hjhVP-5gjik745oHP9-4xnvxqJpo28seSd6ayWf1crpTOLUhSreHi/exec';
 
 // Google OAuth Client ID (Web) for Sign-In. Create at console.cloud.google.com
 // > APIs & Services > Credentials. Use the SAME value in backend/Code.gs (CLIENT_ID).
-const GOOGLE_CLIENT_ID = 'PASTE_YOUR_GOOGLE_OAUTH_CLIENT_ID_HERE';
+const GOOGLE_CLIENT_ID = '394782625197-h36khj5uonj1eu75dhilgph55rvegvab.apps.googleusercontent.com';
 
 // Demo mode auto-activates while BACKEND_URL is unset, using sample data stored
 // in the browser. It switches off automatically once a real URL is pasted above.
