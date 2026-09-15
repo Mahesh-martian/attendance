@@ -1,0 +1,6 @@
+# Backend code goes into Google Apps Script only — never publish it (holds secrets)
+backend/
+
+# OS / editor files
+.DS_Store
+Thumbs.db

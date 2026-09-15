@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mark Attendance</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <main class="card">
+    <h1>Mark Attendance</h1>
+    <p id="today" class="muted"></p>
+
+    <div id="signinArea" style="display: none;">
+      <label>Step 1 — Sign in</label>
+      <div id="gsi-button"></div>
+    </div>
+
+    <div id="demoIdentity" style="display: none;">
+      <label for="student">Your name (demo)</label>
+      <select id="student"><option value="">Loading…</option></select>
+    </div>
+
+    <p id="identity" class="identity" style="display: none;"></p>
+
+    <label for="code">Today's code</label>
+    <input id="code" inputmode="numeric" maxlength="4" placeholder="4-digit code" />
+    <button id="submit">Mark Present</button>
+    <p id="msg" class="msg"></p>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

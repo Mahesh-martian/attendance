@@ -1,0 +1,35 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+  background: #0f172a; color: #e2e8f0; font-family: system-ui, sans-serif; padding: 24px;
+}
+.card { background: #1e293b; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
+.card.wide { max-width: 900px; }
+h1 { margin: 0 0 16px; font-size: 22px; }
+h2 { font-size: 16px; color: #94a3b8; }
+label { display: block; margin: 14px 0 6px; font-size: 14px; color: #94a3b8; }
+select, input, button {
+  width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #334155;
+  background: #0f172a; color: #e2e8f0; font-size: 16px;
+}
+button { margin-top: 18px; background: #22c55e; color: #052e16; font-weight: 700; border: none; cursor: pointer; }
+button:disabled { opacity: .6; cursor: not-allowed; }
+.muted { color: #94a3b8; font-size: 14px; }
+.msg { margin-top: 14px; min-height: 20px; font-weight: 600; }
+.msg.ok { color: #22c55e; }
+.msg.err { color: #f87171; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row input, .row button { width: auto; margin-top: 0; }
+.stats { display: flex; gap: 12px; margin: 18px 0; }
+.stat { flex: 1; background: #0f172a; border-radius: 12px; padding: 14px; text-align: center; }
+.stat span { display: block; font-size: 26px; font-weight: 800; }
+.stat small { color: #94a3b8; }
+.qr { display: flex; justify-content: center; padding: 12px; background: #fff; border-radius: 12px; width: max-content; margin: 0 auto; }
+.cols { display: flex; gap: 24px; margin-top: 18px; flex-wrap: wrap; }
+.cols > div { flex: 1; min-width: 220px; }
+ol { padding-left: 22px; }
+li { padding: 4px 0; border-bottom: 1px solid #1e293b; }
+.demo-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 10; background: #f59e0b; color: #1e293b; font-weight: 700; text-align: center; padding: 10px 12px; font-size: 13px; }
+body.has-demo-banner { padding-top: 52px; }
+.identity { margin: 12px 0; padding: 10px 12px; background: #0f172a; border-radius: 10px; font-weight: 600; color: #22c55e; font-size: 14px; }
+#gsi-button { margin-top: 6px; }
