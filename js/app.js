@@ -32,14 +32,41 @@ function decodeJwt(token) {
 }
 
 // Called by Google Identity Services after a successful sign-in.
-function handleCredential(response) {
+async function handleCredential(response) {
   idToken = response.credential;
   const p = decodeJwt(idToken);
   $('identity').textContent = 'Signed in as ' + (p.name || p.email) + ' (' + p.email + ')';
   $('identity').style.display = 'block';
-  setMsg('', true);
+  setMsg('Checking your enrolment…', true);
+  try {
+    const who = await fetch(BACKEND_URL, { method: 'POST', body: JSON.stringify({ action: 'whoami', idToken }) }).then((r) => r.json());
+    if (who.ok && who.enrolled) {
+      $('claimArea').style.display = 'none';
+      setMsg('', true);
+    } else {
+      await loadUnclaimed();
+      $('claimArea').style.display = 'block';
+      setMsg('First time — pick your name below to link your account.', true);
+    }
+  } catch (e) {
+    setMsg('Could not verify enrolment. Check your connection.', false);
+  }
 }
 window.handleCredential = handleCredential;
+
+async function loadUnclaimed() {
+  try {
+    const data = await fetch(BACKEND_URL + '?action=unclaimed').then((r) => r.json());
+    const sel = $('claimName');
+    sel.innerHTML = '<option value="">Select your name…</option>';
+    (data.ok ? data.students : []).forEach((s) => {
+      const o = document.createElement('option');
+      o.value = s.rollNo;
+      o.textContent = s.rollNo + ' — ' + s.name;
+      sel.appendChild(o);
+    });
+  } catch (e) { /* leave empty */ }
+}
 
 function initSignIn() {
   google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredential });
@@ -90,15 +117,22 @@ async function markPresent() {
 
   if (!idToken) return setMsg('Please sign in with Google first.', false);
 
+  const claiming = $('claimArea').style.display !== 'none';
+  const claimRollNo = claiming ? $('claimName').value : '';
+  if (claiming && !claimRollNo) return setMsg('Please select your name to link your account.', false);
+
   $('submit').disabled = true;
   setMsg('Marking…', true);
   try {
     const loc = await getLocation();
+    const payload = { action: 'checkin', idToken, subject, code, lat: loc?.lat ?? null, lng: loc?.lng ?? null };
+    if (claimRollNo) payload.claimRollNo = claimRollNo;
     const data = await fetch(BACKEND_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'checkin', idToken, subject, code, lat: loc?.lat ?? null, lng: loc?.lng ?? null }),
+      body: JSON.stringify(payload),
     }).then((r) => r.json());
     setMsg(data.message || data.error, data.ok);
+    if (data.ok) $('claimArea').style.display = 'none';
   } catch (e) {
     setMsg('Network error. Please try again.', false);
   } finally {
