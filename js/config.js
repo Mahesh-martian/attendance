@@ -21,6 +21,10 @@ const DEMO_STUDENTS = [
   { rollNo: '09', name: 'Myra Joshi' },
   { rollNo: '10', name: 'Advait Kulkarni' },
 ];
+const DEMO_CLASSES = [
+  { classId: 'C1', subject: 'Java', startTime: '00:00', endTime: '23:59', days: 'All', active: true },
+  { classId: 'C2', subject: 'Python', startTime: '00:00', endTime: '23:59', days: 'All', active: true },
+];
 
 function demoTodayStr() {
   const d = new Date();

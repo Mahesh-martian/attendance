@@ -12,6 +12,8 @@
     <div class="row">
       <label for="date">Date</label>
       <input type="date" id="date" />
+      <label for="subjectFilter">Subject</label>
+      <select id="subjectFilter"></select>
       <button id="refresh">Refresh</button>
       <button id="export">Export CSV</button>
     </div>
@@ -21,11 +23,27 @@
       <div class="stat"><span id="code">----</span><small>Today's code</small></div>
     </div>
     <div id="qr" class="qr"></div>
-    <p class="muted">Show this QR in class — students scan, pick their name, tap Mark Present.</p>
+    <p class="muted">Show this QR in class — students scan, sign in, pick the subject, tap Mark Present.</p>
     <div class="cols">
       <div><h2>Present</h2><ol id="presentList"></ol></div>
       <div><h2>Absent</h2><ol id="absentList"></ol></div>
     </div>
+
+    <hr class="sep" />
+    <h2>Manage classes</h2>
+    <div class="row">
+      <input id="cSubject" placeholder="Subject (e.g. Java)" />
+      <input id="cStart" type="time" />
+      <input id="cEnd" type="time" />
+      <input id="cDays" placeholder="Days: All or Mon,Wed" />
+      <label class="chk"><input type="checkbox" id="cActive" checked /> Active</label>
+      <button id="cSave">Add class</button>
+      <button id="cCancel" class="ghost" style="display: none;">Cancel</button>
+    </div>
+    <table class="classes">
+      <thead><tr><th>Subject</th><th>Start</th><th>End</th><th>Days</th><th>Active</th><th></th></tr></thead>
+      <tbody id="classesBody"></tbody>
+    </table>
   </main>
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
   <script src="js/config.js"></script>

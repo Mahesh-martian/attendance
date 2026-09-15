@@ -46,6 +46,28 @@ function initSignIn() {
   google.accounts.id.renderButton($('gsi-button'), { theme: 'filled_blue', size: 'large', text: 'signin_with', width: 260 });
 }
 
+function fillSubjects(classes) {
+  const sel = $('subject');
+  if (!classes.length) { sel.innerHTML = '<option value="">No classes scheduled</option>'; return; }
+  sel.innerHTML = '<option value="">Select subject…</option>';
+  classes.forEach((c) => {
+    const o = document.createElement('option');
+    o.value = c.subject;
+    o.textContent = c.subject + ' (' + c.startTime + '–' + c.endTime + ')';
+    sel.appendChild(o);
+  });
+}
+
+async function loadClasses() {
+  if (DEMO_MODE) { fillSubjects(DEMO_CLASSES); return; }
+  try {
+    const data = await fetch(BACKEND_URL + '?action=classes').then((r) => r.json());
+    fillSubjects(data.ok ? data.classes : []);
+  } catch (e) {
+    setMsg('Could not load class list.', false);
+  }
+}
+
 function fillStudents(students) {
   const sel = $('student');
   sel.innerHTML = '<option value="">Select your name…</option>';
@@ -59,14 +81,12 @@ function fillStudents(students) {
 }
 
 async function markPresent() {
+  const subject = $('subject').value;
   const code = $('code').value.trim();
+  if (!subject) return setMsg('Please select a subject.', false);
   if (code.length !== 4) return setMsg('Enter the 4-digit code.', false);
 
-  if (DEMO_MODE) {
-    const sel = $('student');
-    if (!sel.value) return setMsg('Please select your name.', false);
-    return demoMarkPresent(sel.value, sel.selectedOptions[0]?.dataset.name || '', code);
-  }
+  if (DEMO_MODE) return demoMarkPresent(subject, code);
 
   if (!idToken) return setMsg('Please sign in with Google first.', false);
 
@@ -76,7 +96,7 @@ async function markPresent() {
     const loc = await getLocation();
     const data = await fetch(BACKEND_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'checkin', idToken, code, lat: loc?.lat ?? null, lng: loc?.lng ?? null }),
+      body: JSON.stringify({ action: 'checkin', idToken, subject, code, lat: loc?.lat ?? null, lng: loc?.lng ?? null }),
     }).then((r) => r.json());
     setMsg(data.message || data.error, data.ok);
   } catch (e) {
@@ -86,15 +106,19 @@ async function markPresent() {
   }
 }
 
-function demoMarkPresent(rollNo, name, code) {
+function demoMarkPresent(subject, code) {
+  const sel = $('student');
+  if (sel && !sel.value) return setMsg('Please select your name.', false);
   if (code !== DEMO_CODE) return setMsg('Wrong code. In demo the code is ' + DEMO_CODE + '.', false);
+  const rollNo = sel ? sel.value : '01';
+  const name = sel && sel.selectedOptions[0] ? (sel.selectedOptions[0].dataset.name || '') : 'Demo';
   const records = demoLoad();
   const today = demoTodayStr();
-  if (records.some((r) => r.date === today && r.rollNo === rollNo))
-    return setMsg('You already marked present today.', false);
-  records.push({ date: today, rollNo, name });
+  if (records.some((r) => r.date === today && r.rollNo === rollNo && r.subject === subject))
+    return setMsg('You already marked present for ' + subject + ' today.', false);
+  records.push({ date: today, rollNo, name, subject });
   demoSave(records);
-  setMsg('Attendance marked. Thank you, ' + name + '!', true);
+  setMsg('Attendance marked for ' + subject + '. Thank you, ' + name + '!', true);
 }
 
 function boot() {
@@ -102,6 +126,7 @@ function boot() {
   $('code').value = getParam('code') || (DEMO_MODE ? DEMO_CODE : '');
   $('submit').addEventListener('click', markPresent);
   demoBanner();
+  loadClasses();
 
   if (DEMO_MODE) {
     $('demoIdentity').style.display = 'block';

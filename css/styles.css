@@ -33,3 +33,13 @@ li { padding: 4px 0; border-bottom: 1px solid #1e293b; }
 body.has-demo-banner { padding-top: 52px; }
 .identity { margin: 12px 0; padding: 10px 12px; background: #0f172a; border-radius: 10px; font-weight: 600; color: #22c55e; font-size: 14px; }
 #gsi-button { margin-top: 6px; }
+.sep { border: none; border-top: 1px solid #334155; margin: 26px 0 6px; }
+.chk { display: flex; align-items: center; gap: 6px; width: auto; font-size: 14px; color: #94a3b8; margin-top: 0; }
+.chk input { width: auto; }
+.row select { width: auto; margin-top: 0; }
+.classes { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+.classes th, .classes td { text-align: left; padding: 8px; border-bottom: 1px solid #1e293b; }
+.classes th { color: #94a3b8; font-weight: 600; }
+button.link { width: auto; margin: 0 4px 0 0; padding: 4px 10px; background: #334155; color: #e2e8f0; font-weight: 600; font-size: 13px; }
+button.link.danger { background: #7f1d1d; color: #fecaca; }
+button.ghost { background: #334155; color: #e2e8f0; }
